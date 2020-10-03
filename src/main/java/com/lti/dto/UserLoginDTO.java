@@ -1,6 +1,7 @@
 package com.lti.dto;
 
-public class Login {
+public class UserLoginDTO {
+	
 	private String email;
 	private String password;
 	public String getEmail() {
@@ -15,6 +16,5 @@ public class Login {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
+
 }

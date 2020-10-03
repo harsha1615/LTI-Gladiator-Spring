@@ -4,11 +4,10 @@ import java.util.List;
 
 import com.lti.entity.Product;
 
-public interface ProductRepository {
+public interface ProductRepository extends GenericRepository {
 
-	boolean isProductPresent(int id);
-	public List<Product> getAllProduct(); 
-	Product getProduct(int id);
-	int save(Product product);
+	boolean isProductExists(int id);
+
+	List<Product> getAllProducts(); 
 	
 }

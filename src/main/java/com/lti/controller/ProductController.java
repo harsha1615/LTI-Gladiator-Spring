@@ -16,24 +16,23 @@ import com.lti.service.ProductService;
 @CrossOrigin
 public class ProductController {
 
-	@Autowired 
-	private ProductService productservice;
-	
-	@GetMapping(path = "/product") 
-	public List<ProductDTO> getAllProduct(){
-	 
-			List<Product> products=this.productservice.getAllProduct();
-			List<ProductDTO> productsDto=new ArrayList<ProductDTO>();
-			for(Product product: products) {
-				ProductDTO productDto=new ProductDTO();
-				productDto.setId(product.getId());
-				productDto.setName(product.getName());
-				productDto.setImage(product.getImage());
-				productDto.setDescription(product.getDescription());
-				productDto.setCost(product.getFinalPrice());
-				productsDto.add(productDto);
-			}
-	
-			return productsDto;
+	@Autowired
+	private ProductService productService;
+
+	@GetMapping(path = "/product")
+	public List<ProductDTO> getAllProduct() {
+		List<Product> products = this.productService.getAllProducts();
+		List<ProductDTO> productsDto = new ArrayList<ProductDTO>();
+		for (Product product : products) {
+			ProductDTO productDto = new ProductDTO();
+			productDto.setId(product.getId());
+			productDto.setName(product.getName());
+			productDto.setImage(product.getImage());
+			productDto.setDescription(product.getDescription());
+			productDto.setCost(product.getFinalPrice());
+			productsDto.add(productDto);
+		}
+		return productsDto;
 	}
+	
 }
