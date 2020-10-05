@@ -18,8 +18,8 @@ public class ProductRepositoryImpl extends GenericRepositoryImpl implements Prod
 
 	@Override
 	public boolean isProductExists(int id) {
-		return entityManager
-				.createQuery("select count(p.id) from Product p where p.id=:id", Integer.class)
+		return (Long) entityManager
+				.createQuery("select count(p.id) from Product p where p.id=:id")
 				.setParameter("id", id)
 				.getSingleResult() == 1;
 	}

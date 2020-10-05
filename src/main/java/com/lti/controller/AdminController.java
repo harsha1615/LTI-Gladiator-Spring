@@ -3,6 +3,7 @@ package com.lti.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.dto.ActivateCardDTO;
+import com.lti.dto.AdminProductDTO;
 import com.lti.dto.AuthStatusDTO;
 import com.lti.dto.UserEmiCardDTO;
 import com.lti.dto.UserLoginDTO;
 import com.lti.dto.UserProfileDTO;
 import com.lti.entity.EmiCard;
+import com.lti.entity.Product;
 import com.lti.entity.User;
 import com.lti.service.AdminService;
 
@@ -77,6 +80,37 @@ public class AdminController {
 				return convertToDTO(user);
 			}
 			throw new Exception("Invalid Request");
+		}catch(Exception e) {
+			AuthStatusDTO status=new AuthStatusDTO();
+			status.setSuccess(false);
+			status.setMessage(e.getMessage());
+			return status;
+		}
+	}
+	
+	@GetMapping("/products")
+	public Object getProduct(@RequestParam("pid") int pid) {
+		try {
+			Product product = adminService.getProduct(pid);
+			AdminProductDTO adminProduct = new AdminProductDTO();
+			BeanUtils.copyProperties(product, adminProduct);
+			return adminProduct;
+		}catch(Exception e) {
+			AuthStatusDTO status=new AuthStatusDTO();
+			status.setSuccess(false);
+			status.setMessage(e.getMessage());
+			return status;
+		}
+	}
+	
+	@PostMapping("/products")
+	public Object addProduct(@RequestBody Product product) {
+		try {
+			adminService.saveProduct(product);
+			AuthStatusDTO status=new AuthStatusDTO();
+			status.setSuccess(true);
+			status.setMessage("Product added Successfully");
+			return status;
 		}catch(Exception e) {
 			AuthStatusDTO status=new AuthStatusDTO();
 			status.setSuccess(false);
