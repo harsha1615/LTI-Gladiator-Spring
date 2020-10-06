@@ -27,6 +27,7 @@ public class UserPayment {
 	private float amount;
 	@Column(name = "date_time")
 	private LocalDateTime dateTime;
+	
 	public int getId() {
 		return id;
 	}

@@ -23,6 +23,7 @@ public class UserBank {
 	private String accountNo;
 	@OneToOne(mappedBy = "bank")
 	private User user;
+	
 	public int getId() {
 		return id;
 	}

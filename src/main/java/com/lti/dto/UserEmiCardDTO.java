@@ -1,12 +1,16 @@
 package com.lti.dto;
 
+import java.time.LocalDate;
+
+import com.lti.entity.EmiCard.CardType;
+
 public class UserEmiCardDTO {
 	
 	private int id;
-	private String cardType;
+	private CardType cardType;
 	private String cardNo;
 	private boolean activated;
-	private String validity;
+	private LocalDate validity;
 	private float balance;
 	private float limit;
 	
@@ -16,10 +20,10 @@ public class UserEmiCardDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getCardType() {
+	public CardType getCardType() {
 		return cardType;
 	}
-	public void setCardType(String cardType) {
+	public void setCardType(CardType cardType) {
 		this.cardType = cardType;
 	}
 	public String getCardNo() {
@@ -34,10 +38,10 @@ public class UserEmiCardDTO {
 	public void setActivated(boolean activated) {
 		this.activated = activated;
 	}
-	public String getValidity() {
+	public LocalDate getValidity() {
 		return validity;
 	}
-	public void setValidity(String validity) {
+	public void setValidity(LocalDate validity) {
 		this.validity = validity;
 	}
 	public float getBalance() {
@@ -52,6 +56,5 @@ public class UserEmiCardDTO {
 	public void setLimit(float limit) {
 		this.limit = limit;
 	}
-	
 	
 }

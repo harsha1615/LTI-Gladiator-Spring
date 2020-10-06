@@ -20,18 +20,13 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	@GetMapping(path = "/product")
+	@GetMapping(path = "/products")
 	public List<ProductDTO> getAllProduct() {
 		List<Product> products = this.productService.getAllProducts();
 		List<ProductDTO> productsDto = new ArrayList<ProductDTO>();
 		for (Product product : products) {
 			ProductDTO productDto = new ProductDTO();
 			BeanUtils.copyProperties(product, productDto);
-//			productDto.setId(product.getId());
-//			productDto.setName(product.getName());
-//			productDto.setImage(product.getImage());
-//			productDto.setDescription(product.getDescription());
-//			productDto.setCost(product.getFinalPrice());
 			productsDto.add(productDto);
 		}
 		return productsDto;

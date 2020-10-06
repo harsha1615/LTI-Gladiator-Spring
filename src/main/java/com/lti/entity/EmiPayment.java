@@ -33,6 +33,7 @@ public class EmiPayment {
 	private float totalAmount;
 	@Column(name = "date_time")
 	private LocalDateTime dateTime;
+	
 	public int getId() {
 		return id;
 	}

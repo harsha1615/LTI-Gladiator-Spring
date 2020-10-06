@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lti.entity.Product;
-import com.lti.entity.Purchase;
 import com.lti.exception.ProductServiceException;
 import com.lti.repository.ProductRepository;
 
@@ -32,9 +31,4 @@ public class ProductServiceImpl implements ProductService {
 		throw new ProductServiceException("Product Does Not Exists");
 	}
 	
-	@Override
-	public Product save(Product product) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

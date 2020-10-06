@@ -30,6 +30,7 @@ public class Product {
 	private float cost;
 	@OneToMany(mappedBy = "product")
 	private List<Purchase> purchases;
+	
 	public int getId() {
 		return id;
 	}

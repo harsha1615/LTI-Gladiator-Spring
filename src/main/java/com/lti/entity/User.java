@@ -26,8 +26,7 @@ public class User {
 	private String name;
 	private String username;
 	private String email;
-	@Column(name = "phone_no")
-	private String phoneNo;
+	private String phone;
 	private String password;
 	private String address;
 	@Column(name = "paid_for_card")
@@ -42,6 +41,7 @@ public class User {
 	private List<Purchase> purchases;
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private UserPayment userPayment;
+
 	public int getId() {
 		return id;
 	}
@@ -66,11 +66,11 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPhoneNo() {
-		return phoneNo;
+	public String getPhone() {
+		return phone;
 	}
-	public void setPhoneNo(String phoneNo) {
-		this.phoneNo = phoneNo;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	public String getPassword() {
 		return password;
@@ -114,5 +114,5 @@ public class User {
 	public void setUserPayment(UserPayment userPayment) {
 		this.userPayment = userPayment;
 	}
-	
+
 }

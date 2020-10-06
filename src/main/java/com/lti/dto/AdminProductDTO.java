@@ -8,7 +8,7 @@ public class AdminProductDTO {
 	private String description;
 	private float originalPrice;
 	private float profitPercent;
-	private float finalPrice;
+	private float cost;
 	
 	public int getId() {
 		return id;
@@ -46,11 +46,11 @@ public class AdminProductDTO {
 	public void setProfitPercent(float profitPercent) {
 		this.profitPercent = profitPercent;
 	}
-	public float getFinalPrice() {
-		return finalPrice;
+	public float getCost() {
+		return cost;
 	}
-	public void setFinalPrice(float finalPrice) {
-		this.finalPrice = finalPrice;
+	public void setCost(float cost) {
+		this.cost = cost;
 	}
 	
 }

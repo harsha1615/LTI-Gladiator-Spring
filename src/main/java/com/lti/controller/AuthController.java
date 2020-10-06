@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.entity.User;
-import com.lti.dto.UserLoginDTO;
-import com.lti.dto.AuthStatusDTO;
+import com.lti.dto.LoginDTO;
+import com.lti.dto.StatusDTO;
 import com.lti.service.AuthService;
 
 @RestController
@@ -21,20 +21,19 @@ public class AuthController {
 	private AuthService authService;
 	
 	@PostMapping(path="/register")
-	public AuthStatusDTO register(@RequestBody User user) {
-	
+	public StatusDTO register(@RequestBody User user) {
 		String cardNo=""+System.currentTimeMillis();
 		user.getEmiCard().setCardNo(cardNo.substring(1,13));
 		user.getEmiCard().setValidity(LocalDate.now());
 		try {
 			boolean success=authService.register(user);
-			AuthStatusDTO status=new AuthStatusDTO();
+			StatusDTO status=new StatusDTO();
 			status.setSuccess(success);
 			status.setMessage("Registration Successful");
 			return status;
 		}
 		catch(Exception e){
-			AuthStatusDTO status=new AuthStatusDTO();
+			StatusDTO status=new StatusDTO();
 			status.setSuccess(false);
 			status.setMessage(e.getMessage());
 			return status;
@@ -42,16 +41,16 @@ public class AuthController {
 	}
 	
 	@PostMapping(path="/login") 
-	public AuthStatusDTO login(@RequestBody UserLoginDTO login) {
+	public StatusDTO login(@RequestBody LoginDTO login) {
 		try {
 			int uid = authService.login(login.getEmail(), login.getPassword());
-			AuthStatusDTO authStatus = new AuthStatusDTO();
+			StatusDTO authStatus = new StatusDTO();
 			authStatus.setSuccess(true);
 			authStatus.setMessage(""+uid);
 			return authStatus;	
 		}
 		catch(Exception e) {
-			AuthStatusDTO status=new AuthStatusDTO();
+			StatusDTO status=new StatusDTO();
 			status.setSuccess(false);
 			status.setMessage(e.getMessage());
 			return status;

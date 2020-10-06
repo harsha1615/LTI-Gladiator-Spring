@@ -7,6 +7,7 @@ public class ProductDTO {
 	private String image;
 	private String description;
 	private float cost;
+	
 	public int getId() {
 		return id;
 	}
@@ -38,5 +39,4 @@ public class ProductDTO {
 		this.cost = cost;
 	}
 	
-
 }

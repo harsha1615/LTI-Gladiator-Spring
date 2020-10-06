@@ -9,6 +9,7 @@ public class EmiPaymentDTO {
 	private float lateFee;
 	private float totalAmount;
 	private LocalDateTime dateTime;
+	
 	public int getEmiNo() {
 		return emiNo;
 	}

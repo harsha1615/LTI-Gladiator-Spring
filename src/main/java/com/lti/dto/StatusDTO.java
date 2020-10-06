@@ -1,6 +1,6 @@
 package com.lti.dto;
 
-public class AuthStatusDTO {
+public class StatusDTO {
 
 	private boolean success;
 	private String message;
