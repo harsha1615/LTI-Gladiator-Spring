@@ -56,10 +56,21 @@ public class PurchaseController {
 		}
 	}
 	
-//	@PostMapping("/pay-emi")
-//	publi Object payEmi(@RequestBody PayEmiDTO payEmiDto) {
-//		
-//	}
+	@PostMapping("/pay-emi")
+	public Object payEmi(@RequestBody PayEmiDTO payEmiDto) {
+		try {
+			
+			Purchase purchase = purchaseService.payEmi(payEmiDto.getUserId(), payEmiDto.getPurchaseId());
+			PurchaseDTO purchaseDto = convertToDTO(purchase);
+			return purchaseDto;
+			
+		}catch(Exception e){
+			AuthStatusDTO status=new AuthStatusDTO();
+			status.setSuccess(false);
+			status.setMessage(e.getMessage());
+			return status;
+		}
+	}
 	
 	private PurchaseDTO convertToDTO(Purchase purchase) {
 		PurchaseDTO purchaseDto = new PurchaseDTO();

@@ -8,12 +8,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lti.entity.EmiPayment;
 import com.lti.entity.Product;
 import com.lti.entity.Purchase;
 import com.lti.entity.User;
 import com.lti.exception.UserServiceException;
 import com.lti.repository.ProductRepository;
-import com.lti.repository.ProductRepositoryImpl;
 import com.lti.repository.PurchaseRepository;
 import com.lti.repository.UserRepository;
 
@@ -56,6 +56,37 @@ public class PurchaseServiceImpl implements PurchaseService {
 				return purchaseRepository.save(purchase);
 			}
 			throw new UserServiceException("Product with ID:"+productId+" does not exists");
+		}
+		throw new UserServiceException("User with ID:"+userId+" does not exists");
+	}
+	
+	@Override
+	public Purchase payEmi(int userId, int purchaseId) {
+		if(userRepository.isUserExistsById(userId)) {
+			User user = userRepository.findById(User.class, userId);
+			if(purchaseRepository.isUserPurchaseExists(purchaseId, user)) {
+				Purchase purchase = purchaseRepository.findById(Purchase.class, purchaseId);
+				if(user.getEmiCard().getBalance() >= purchase.getEmiAmount()) {
+					EmiPayment emiPayment = new EmiPayment();
+					emiPayment.setPurchase(purchase);
+					emiPayment.setEmiAmount(purchase.getEmiAmount());
+					emiPayment.setEmiNo(purchase.getEmisPaid()+1);
+					float lateFee = 0;
+					emiPayment.setLateFee(lateFee);
+					emiPayment.setDateTime(LocalDateTime.now());
+					emiPayment.setTotalAmount(emiPayment.getEmiAmount()+emiPayment.getLateFee());
+					List<EmiPayment> emiPayments = purchase.getEmiPayments();
+					emiPayments.add(emiPayment);
+					purchase.setEmiPayments(emiPayments);
+					purchase.setEmisPaid(purchase.getEmisPaid()+1);
+					user.getEmiCard().setBalance(user.getEmiCard().getBalance()-emiPayment.getTotalAmount());
+					userRepository.save(user);
+					return purchaseRepository.save(purchase);
+				}else {
+					throw new UserServiceException("Low Balance in your Card");
+				}
+			}
+			throw new UserServiceException("Purchase with ID:"+purchaseId+" does not exists");
 		}
 		throw new UserServiceException("User with ID:"+userId+" does not exists");
 	}

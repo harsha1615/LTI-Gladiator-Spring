@@ -16,5 +16,14 @@ public class PurchaseRepositoryImpl extends GenericRepositoryImpl implements Pur
 				.setParameter("user", user)
 				.getResultList();
 	}
+	
+	@Override
+	public boolean isUserPurchaseExists(int pid, User user) {
+		return (Long) entityManager
+				.createQuery("select count(p.id) from Purchase p where p.id=:pid and p.user=:user")
+				.setParameter("pid", pid)
+				.setParameter("user", user)
+				.getSingleResult() == 1;
+	}
 
 }

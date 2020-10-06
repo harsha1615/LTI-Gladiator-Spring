@@ -10,6 +10,7 @@ public interface PurchaseRepository extends GenericRepository{
 
 	List<Purchase> getAllPurchasesOfUser(User user);
 	
+	boolean isUserPurchaseExists(int pid, User user);
 	
 
 }

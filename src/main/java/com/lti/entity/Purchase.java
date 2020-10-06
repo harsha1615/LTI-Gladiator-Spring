@@ -3,6 +3,7 @@ package com.lti.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,7 +40,7 @@ public class Purchase {
 	private int emisPaid;
 	@Column(name = "date_time")
 	private LocalDateTime dateTime;
-	@OneToMany(mappedBy = "purchase")
+	@OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
 	private List<EmiPayment> emiPayments;
 	
 	public int getId() {
