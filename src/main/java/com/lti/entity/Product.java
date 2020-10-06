@@ -27,7 +27,7 @@ public class Product {
 	@Column(name = "profit_percent", columnDefinition = "NUMBER(10,2)")
 	private float profitPercent;
 	@Column(name = "final_price", columnDefinition = "NUMBER(10,2)")
-	private float finalPrice;
+	private float cost;
 	@OneToMany(mappedBy = "product")
 	private List<Purchase> purchases;
 	public int getId() {
@@ -66,11 +66,11 @@ public class Product {
 	public void setProfitPercent(float profitPercent) {
 		this.profitPercent = profitPercent;
 	}
-	public float getFinalPrice() {
-		return finalPrice;
+	public float getCost() {
+		return cost;
 	}
-	public void setFinalPrice(float finalPrice) {
-		this.finalPrice = finalPrice;
+	public void setCost(float cost) {
+		this.cost = cost;
 	}
 	public List<Purchase> getPurchases() {
 		return purchases;
