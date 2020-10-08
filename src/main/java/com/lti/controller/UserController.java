@@ -52,7 +52,7 @@ public class UserController {
 			if(!userpay.isPay()) {
 				throw new Exception("Invalid Request");
 			}
-			User user = userService.payForCard(userpay.getUid(), 1000);
+			User user = userService.payForCard(userpay.getUid(), 100);
 			return appUtils.convertToDTO(user);
 		}catch(Exception e) {
 			StatusDTO status=new StatusDTO();
@@ -76,12 +76,10 @@ public class UserController {
 	@PostMapping(path="/purchases")
 	public Object purchaseProduct(@RequestBody PurchaseProductDTO purchaseProduct) {
 		try {
-			userService.purchaseProduct(purchaseProduct.getUserId(), purchaseProduct.getProductId(), purchaseProduct.getEmiTenure());
-			StatusDTO status=new StatusDTO();
-			status.setSuccess(true);
-			status.setMessage("Product Purchased Successfully");
-			return status;
+			Purchase purchase = userService.purchaseProduct(purchaseProduct.getUserId(), purchaseProduct.getProductId(), purchaseProduct.getEmiTenure());
+			return appUtils.convertToDTO(purchase);
 		}catch(Exception e){
+			e.printStackTrace();
 			StatusDTO status=new StatusDTO();
 			status.setSuccess(false);
 			status.setMessage(e.getMessage());
@@ -96,6 +94,7 @@ public class UserController {
 			PurchaseDTO purchaseDto = appUtils.convertToDTO(purchase);
 			return purchaseDto;
 		}catch(Exception e){
+			e.printStackTrace();
 			StatusDTO status=new StatusDTO();
 			status.setSuccess(false);
 			status.setMessage(e.getMessage());

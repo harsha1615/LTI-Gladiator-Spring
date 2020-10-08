@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.lti.entity.Admin;
+import com.lti.entity.EmiCard;
 import com.lti.entity.Product;
 import com.lti.entity.User;
 import com.lti.exception.AdminServiceException;
@@ -57,11 +58,20 @@ public class AdminServiceImpl implements AdminService {
 	public User activateEmiCard(int uid) {
 		if (userRepository.isUserExistsById(uid)) {
 			User user = userRepository.getUserProfile(uid);
-			user.getEmiCard().setActivated(true);
-			user.getEmiCard().setLimit(10000);
-			user.getEmiCard().setBalance(10000);
-			user.getEmiCard().setValidity(LocalDate.now().plusYears(1));
-			return userRepository.save(user);
+			if(user.isPaidForCard()) {
+				if(user.getEmiCard().getCardType() == EmiCard.CardType.GOLD) {
+					user.getEmiCard().setLimit(50000);
+					user.getEmiCard().setBalance(50000);				
+				}
+				if(user.getEmiCard().getCardType() == EmiCard.CardType.TITANIUM) {
+					user.getEmiCard().setLimit(100000);
+					user.getEmiCard().setBalance(100000);				
+				}
+				user.getEmiCard().setActivated(true);
+				user.getEmiCard().setValidity(LocalDate.now().plusYears(1));
+				return userRepository.save(user);				
+			}
+			throw new AdminServiceException("User Not Paid for the Card");
 		}
 		throw new AdminServiceException("User Does Not Exists");
 	}

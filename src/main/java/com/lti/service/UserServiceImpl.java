@@ -1,6 +1,7 @@
 package com.lti.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -88,6 +89,7 @@ public class UserServiceImpl implements UserService {
 						float emiAmount = Math.round(100 * product.getCost() / emiTenure) / 100;
 						purchase.setEmiAmount(emiAmount);
 						purchase.setDateTime(LocalDateTime.now());
+						purchase.setEmiPayments(new ArrayList<>());
 						return purchaseRepository.save(purchase);
 					}
 					throw new UserServiceException("Low Balance in your card");
@@ -105,25 +107,31 @@ public class UserServiceImpl implements UserService {
 			User user = userRepository.findById(User.class, userId);
 			if (purchaseRepository.isUserPurchaseExists(purchaseId, user)) {
 				Purchase purchase = purchaseRepository.findById(Purchase.class, purchaseId);
-				if (user.getEmiCard().getBalance() >= purchase.getEmiAmount()) {
-					EmiPayment emiPayment = new EmiPayment();
+				if(purchase.getEmisPaid() == purchase.getEmiTenure()) {
+					throw new UserServiceException("All EMIs Paid");
+				}
+				float lateFee = 0;
+//				long days = Duration.between(LocalDate.now(), purchase.getDateTime().toLocalDate().plusMonths(purchase.getEmisPaid())).toDays();
+//				if(days > 30) {
+//					lateFee = (days-30)*10;
+//				}
+				EmiPayment emiPayment = new EmiPayment();
+				emiPayment.setEmiAmount(purchase.getEmiAmount());
+				emiPayment.setLateFee(lateFee);
+				emiPayment.setTotalAmount(emiPayment.getEmiAmount() + emiPayment.getLateFee());
+				if(user.getEmiCard().getBalance() >= emiPayment.getTotalAmount()) {
 					emiPayment.setPurchase(purchase);
-					emiPayment.setEmiAmount(purchase.getEmiAmount());
 					emiPayment.setEmiNo(purchase.getEmisPaid() + 1);
-					float lateFee = 0;
-					emiPayment.setLateFee(lateFee);
 					emiPayment.setDateTime(LocalDateTime.now());
-					emiPayment.setTotalAmount(emiPayment.getEmiAmount() + emiPayment.getLateFee());
 					List<EmiPayment> emiPayments = purchase.getEmiPayments();
 					emiPayments.add(emiPayment);
 					purchase.setEmiPayments(emiPayments);
 					purchase.setEmisPaid(purchase.getEmisPaid() + 1);
 					user.getEmiCard().setBalance(user.getEmiCard().getBalance() - emiPayment.getTotalAmount());
 					userRepository.save(user);
-					return purchaseRepository.save(purchase);
-				} else {
-					throw new UserServiceException("Low Balance in your Card");
+					return purchaseRepository.save(purchase);					
 				}
+				throw new UserServiceException("Low Balance in your Card");
 			}
 			throw new UserServiceException("Purchase with ID:" + purchaseId + " does not exists");
 		}
